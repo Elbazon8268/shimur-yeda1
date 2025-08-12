@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>שמירת נתונים</title>
+  <!-- אם זה אתר סטטי: -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body dir="rtl">
+  <h1>ברוכים הבאים לאתר לשימור ידע</h1>
+
+  <form id="theForm">
+    <h2>נא מלא פרטים</h2>
+
+    <label for="fullName">שם מלא</label><br>
+    <input type="text" id="fullName" name="fullName" required><br><br>
+
+    <label for="idNumber">תעודת זהות</label><br>
+    <input type="text" id="idNumber" name="idNumber" required pattern="[0-9]{8,9}"><br><br>
+
+    <label for="personalNumber">פנקס</label><br>
+    <input type="text" id="personalNumber" name="personalNumber" required><br><br>
+
+    <button type="submit">שליחה</button>
+  </form>
+
+  <script>
+    // שים פה את ה-URL מה-Deploy של Apps Script
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyzTDeXOwF_D1c_Q7DbIIG4puLhhT7awXzMndboCW1UTV-fPLucOQX6NVR4JTDeZ53-/exec';
+
+    document.getElementById('theForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      const payload = {
+        fullName: form.fullName.value.trim(),
+        idNumber: form.idNumber.value.trim(),
+        personalNumber: form.personalNumber.value.trim()
+      };
+
+      try {
+        // אם תקבל שגיאת CORS, הוסף mode:'no-cors' ותוותר על קריאת התשובה
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+
+        // ננסה לקרוא תשובה (יעבוד אם אין CORS)
+        const data = await res.json().catch(() => ({}));
+        if (!data.ok && Object.keys(data).length) {
+          alert('שגיאה: ' + (data.error || 'בעיה לא ידועה'));
+        } else {
+          alert('נשלח! בדוק את ה-Google Sheets.');
+          form.reset();
+        }
+      } catch (err) {
+        // fallback ל-no-cors:
+        try {
+          await fetch(API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+          });
+          alert('נשלח! (מצב no-cors) בדוק את ה-Google Sheets.');
+          form.reset();
+        } catch (e2) {
+          alert('שגיאה בשליחה: ' + e2.message);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
