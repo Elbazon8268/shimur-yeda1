@@ -31,31 +31,22 @@
 
     document.getElementById('theForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const form = e.target;
-
-      const payload = {
-        fullName: form.fullName.value.trim(),
-        idNumber: form.idNumber.value.trim(),
-        personalNumber: form.personalNumber.value.trim()
+      const fd =new FormData (e.target);
       };
 
       try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        });
-
-        const data = await res.json();
-        if (data.ok) {
-          alert('נשלח! בדוק את ה-Google Sheets.');
-          form.reset();
-        }else{
-           alert('שגיאה: ' + (data.error || 'בעיה לא ידועה'));
+        const res = await fetch(API_URL, {method: 'POST' body:fd});
+        const data = await res.json.().catch() => ({}));
+        console.log ('Response:', data);
+        if (data.ok)
+        {
+          alert ('נשלח!');
+          e.targaet.reset()
+        } else { 'שגיאה בשליחה!:' + (data.error || 'השרת לא החזיר ok')); 
         }
-      } catch (err) {
-          alert('שגיאה בשליחה: ' + err.message);
-        }
-      }
+    } catch (err) {
+    alert ('שגיאה בשליחה:' + err.message);
+    }
     });
   </script>
 </body>
