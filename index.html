@@ -27,7 +27,7 @@
 
   <script>
     // שים פה את ה-URL מה-Deploy של Apps Script
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyzTDeXOwF_D1c_Q7DbIIG4puLhhT7awXzMndboCW1UTV-fPLucOQX6NVR4JTDeZ53-/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzK0j0r1x1d5wvIZBH9GpQsdZzQtA2l3iGkGRZCNw540I7tbifO3RoUEvZs6JsZo9e1/exec';
 
     document.getElementById('theForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -40,34 +40,20 @@
       };
 
       try {
-        // אם תקבל שגיאת CORS, הוסף mode:'no-cors' ותוותר על קריאת התשובה
         const res = await fetch(API_URL, {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(payload)
         });
 
-        // ננסה לקרוא תשובה (יעבוד אם אין CORS)
-        const data = await res.json().catch(() => ({}));
-        if (!data.ok && Object.keys(data).length) {
-          alert('שגיאה: ' + (data.error || 'בעיה לא ידועה'));
-        } else {
+        const data = await res.json();
+        if (data.ok) {
           alert('נשלח! בדוק את ה-Google Sheets.');
           form.reset();
+        }else{
+           alert('שגיאה: ' + (data.error || 'בעיה לא ידועה'));
         }
       } catch (err) {
-        // fallback ל-no-cors:
-        try {
-          await fetch(API_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(payload)
-          });
-          alert('נשלח! (מצב no-cors) בדוק את ה-Google Sheets.');
-          form.reset();
-        } catch (e2) {
-          alert('שגיאה בשליחה: ' + e2.message);
+          alert('שגיאה בשליחה: ' + err.message);
         }
       }
     });
