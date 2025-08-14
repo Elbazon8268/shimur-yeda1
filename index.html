@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>שמירת נתונים</title>
-  <!-- אם זה אתר סטטי: -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body dir="rtl">
@@ -26,26 +25,23 @@
   </form>
 
   <script>
-    // שים פה את ה-URL מה-Deploy של Apps Script
     const API_URL = 'https://script.google.com/macros/s/AKfycbxaPOWCyvUmDdJhwlV8dJlKDFgW7FHbV-cYv9jL6S1WTysoQHw4zw4MrNJ9LiQu0X1I/exec';
 
     document.getElementById('theForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const fd =new FormData (e.target);
-      };
 
       try {
-        const res = await fetch(API_URL, {method: 'POST' , body:fd});
+        const res = await fetch(API_URL, {method: 'POST' , body: fd});
         const data = await res.json.().catch() => ({}));
         console.log ('Response:', data);
-        if (data.ok)
-        {
-          alert ('נשלח!');
-          e.targaet.reset()
-        } else { 'שגיאה בשליחה!:' + (data.error || 'השרת לא החזיר ok')); 
+        if (data.ok) {
+          alert ('נשלח');
+          e.targaet.reset();
+        } else { alert ('שגיאה: ' + (data.error || 'server didnt return ok')); 
         }
     } catch (err) {
-    alert ('שגיאה בשליחה:' + err.message);
+    alert ('שגיאה בשליחה: ' + err.message);
     }
     });
   </script>
