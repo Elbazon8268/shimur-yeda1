@@ -27,7 +27,7 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbxaPOWCyvUmDdJhwlV8dJlKDFgW7FHbV-cYv9jL6S1WTysoQHw4zw4MrNJ9LiQu0X1I/exec';
 
-    document.getElementById('theForm').addEventListener('submit', async (e) => {
+    ocument.getElementById('theForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const fd =new FormData (e.target);
 
@@ -40,10 +40,12 @@
           e.targaet.reset();
         } else { alert ('שגיאה: ' + (data.error || 'server didnt return ok')); 
         }
-    } catch (err) {
+    } 
+    catch (err) {
     alert ('שגיאה בשליחה: ' + err.message);
     }
     });
+  
   </script>
 </body>
 </html>
