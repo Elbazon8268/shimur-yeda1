@@ -19,7 +19,7 @@
     <label for="idNumber">תעודת זהות</label><br>
     <input type="text" id="idNumber" name="idNumber" required pattern="[0-9]{8,9}"><br><br>
 
-    <label for="personalNumber">פנקס</label><br>
+    <label for="personalNumber">תפקיד</label><br>
     <input type="text" id="personalNumber" name="personalNumber" required><br><br>
 
     <button type="submit">שליחה</button>
@@ -35,8 +35,8 @@
 
       const payload = {
         fullName: form.fullName.value.trim(),
-        idNumber: form.idNumber.value.trim(),
-        personalNumber: form.personalNumber.value.trim()
+        idNumber: form.idnumber.value.trim(),
+        personalNumber: form.job.value.trim()
       };
 
       try {
